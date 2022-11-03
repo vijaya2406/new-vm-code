@@ -1,0 +1,46 @@
+#%RAML 1.0 Trait
+ headers : 
+   client_id :
+      type: string
+      minLength: 5
+      maxLength: 10
+   client_password:
+      type: string
+      minLength: 5
+      maxLength: 10
+ responses: 
+   400 :
+    description: output is response code of Bad request
+    body:
+      example : !include error/400Error-example-api.raml
+   401 :
+     description: output is response code of unauthorized error
+     body:
+      example: !include error/401Error-example-api.raml
+   404 :
+     description: Requested resource not found
+     body:
+      example: !include error/404Error-example-api.raml
+   408 :
+     description: output is response code of request timeout
+     body:
+      example: !include error/408Error-example-api.raml
+   422 :
+     description: output is response code of unprocessable entity
+     body:
+      example: !include error/422Error-example-api.raml
+   500 : 
+     description: output is response code of internal server error
+     body:
+      example: !include error/500Error-example-api.raml
+   503 :
+     description: the service is unavalible
+     body:
+      example: !include error/503Error-example-api.raml
+        
+        
+        
+        
+                  
+
+

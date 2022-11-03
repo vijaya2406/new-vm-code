@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<sub-flow name="insert-detsils-by-id" doc:id="419df4c8-e689-4ce3-b53a-a28567a2fcbf" >
+		<http:request method="POST" doc:name="Request" doc:id="02630ce6-d3b8-4a89-9135-911db7ca4f24" url="http://system-api-bank.us-e2.cloudhub.io/api/BankData">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_password" : "123456",
+	"client_id" : "123456"
+}]]]></http:headers>
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="4d316a14-b258-4bbe-bf2b-18739d4a35be" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message : "inserted done.............."
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="delete-deatils-by-id" doc:id="c92f9789-17e7-442a-a984-0105e3c0cd77" >
+		<ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+		<http:request method="DELETE" doc:name="Request" doc:id="0727e8b8-4db2-46b1-b29f-5eae36f2b57a" url="http://system-api-bank.us-e2.cloudhub.io/api/BankData/{id}">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_password" : "123456",
+	"client_id" : "123456"
+}]]]></http:headers>
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	id : vars.id
+}]]]></http:uri-params>
+		</http:request>
+		<ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  message: "Deleted succesfully................."
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+	</sub-flow>
+	<sub-flow name="select-details-by-id" doc:id="e51754a9-76ee-43bb-b5a4-847e408e7828" >
+		<ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+		<http:request method="GET" doc:name="Request" doc:id="579d9f0d-6f23-4d50-bf3d-ac303d5d70e6" url="http://system-api-bank.us-e2.cloudhub.io/api/BankData/{id}">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_password" : "123456",
+	"client_id" : "123456"
+}]]]></http:headers>
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	id : vars.id
+}]]]></http:uri-params>
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="cf9f356a-58c7-4d84-8ec0-a87581661166" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="select-all-bankdetails" doc:id="885b8605-b754-4b67-9792-d26c95a21ee2" >
+		<logger level="INFO" doc:name="Logger" doc:id="05c3de82-13f2-4a03-9123-106104fbf58f" message="processFlowsatrted.........................................."/>
+		<http:request method="GET" doc:name="Request" doc:id="ffda0f94-438e-468b-836b-e577ce6e5639" url="http://system-api-bank.us-e2.cloudhub.io/api/BankData">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_password" : "123456",
+	"client_id" : "123456"
+}]]]></http:headers>
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="a7544bde-aab5-4cb1-b563-d7af24cdad91" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="2dcab36b-566d-491e-9890-badb7423667a" message="processFlowended......................................."/>
+	</sub-flow>
+	<sub-flow name="update-by-id" doc:id="d05bf9aa-ca94-471f-b57b-9b64719eadc2" >
+		<ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+		<http:request method="PUT" doc:name="Request" doc:id="532d2b83-d68b-49d5-8a60-028a2658537b" url="http://system-api-bank.us-e2.cloudhub.io/api/BankData/{id}">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_password" : "123456",
+	"client_id" : "123456"
+}]]]></http:headers>
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"id" : vars.id
+}]]]></http:uri-params>
+		</http:request>
+		<ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  message: "Updated succesfully.................."
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+	</sub-flow>
+</mule>

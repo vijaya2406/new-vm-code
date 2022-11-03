@@ -1,0 +1,46 @@
+#%RAML 1.0
+title: bank-process-api
+description: "bank details"
+version: v1
+protocols: [HTTP ,HTTPS]
+mediaType: 
+- application/json
+uses:
+  lib: liberarie/library.raml
+/BankData :
+  is: [lib.headers,lib.error code]
+  get:
+    responses:
+      200:
+        body:
+          example: !include example1/responce/All-select-example.raml
+  post:
+    body:
+      example: !include example1/request/inserted-BankData-api.raml
+      type: lib.insertBankData
+    responses:
+      201:
+        body:
+          example: !include example1/responce/insert-example.raml
+  /{id} :
+      is: [lib.headers,lib.error code]
+      get: 
+       responses:
+         200:
+            body:
+                example: !include example1/responce/BankData-select-by ID-example.raml         
+      put:
+        body:
+          example: !include example1/request/updated-BankData-api.raml
+          type: lib.updateBankData
+        responses:
+          200:
+            body:
+              example: !include example1/responce/update-example.raml
+      delete:
+        responses:
+          200:
+            body:
+              example: !include example1/responce/delete-example.raml
+    
+        
